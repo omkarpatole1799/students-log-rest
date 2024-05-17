@@ -40,3 +40,13 @@ export const addStudent = asyncErrHandler(async (req, res) => {
     _data: { user: _createdUser.toJSON() },
   });
 });
+
+export const studentsList = asyncErrHandler(async (req, res) => {
+  let _students = await students.findAll({ raw: true });
+  return res.status(200).json({
+    _success: true,
+    _httpCode: 200,
+    _message: "Students List",
+    _data: { _students },
+  });
+});
