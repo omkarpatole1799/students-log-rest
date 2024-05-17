@@ -1,6 +1,6 @@
 import { BIGINT, DATE, INTEGER, STRING } from "sequelize";
 
-import dbConnection from "../config/db-connect";
+import dbConnection from "../config/db-connect.js";
 
 const students = dbConnection.define("students", {
   id: {
@@ -17,13 +17,15 @@ const students = dbConnection.define("students", {
     type: STRING,
     allowNull: false,
   },
+  s_email: {
+    type: STRING,
+  },
   s_address: {
     type: STRING,
-    allowNull: false,
   },
   s_course: {
     type: STRING,
   },
 });
 
-export default students
+export default students;
