@@ -26,6 +26,9 @@ const students = dbConnection.define("students", {
   s_course: {
     type: STRING,
   },
+  teacher_id: {
+    type: INTEGER,
+  },
 });
 
 export default students;

@@ -5,7 +5,7 @@ const router = express.Router()
 
 router.post('/add', addStudent)
 
-router.get('/list', studentsList )
+router.post('/list', studentsList )
 
 
 

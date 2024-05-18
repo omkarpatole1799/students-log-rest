@@ -9,7 +9,7 @@ import {
 import students from "../models/students.js";
 
 export const addStudent = asyncErrHandler(async (req, res) => {
-  let { sName, sMobile, sEmail, sAddress } = req.body;
+  let { sName, sMobile, sEmail, sAddress, tId } = req.body;
   if (!sName || !sMobile || !sEmail || !sAddress) {
     throw new CustomErr("Invalid details", 400, INVALID_DATA);
   }
@@ -27,6 +27,7 @@ export const addStudent = asyncErrHandler(async (req, res) => {
     s_mob: sMobile,
     s_email: sEmail,
     s_address: sAddress,
+    teacher_id: tId,
   });
 
   if (!_createdUser) {
@@ -42,7 +43,16 @@ export const addStudent = asyncErrHandler(async (req, res) => {
 });
 
 export const studentsList = asyncErrHandler(async (req, res) => {
-  let _students = await students.findAll({ raw: true });
+  let { teacherId } = req.body;
+
+  if (!teacherId) {
+    throw new CustomErr("Invalid Teacher Id", 400, INVALID_DATA);
+  }
+
+  let _students = await students.findAll({
+    where: { teacher_id: teacherId },
+    raw: true,
+  });
   return res.status(200).json({
     _success: true,
     _httpCode: 200,
