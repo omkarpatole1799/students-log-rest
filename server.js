@@ -2,6 +2,7 @@ import express from "express";
 import indexRouter from "./routes/index.js";
 
 import students from "./models/students.js";
+import admin from "./models/admin.js";
 import dbConnection from "./config/db-connect.js";
 import globalErrHandler from "./lib/globalErrHandler.js";
 
@@ -13,7 +14,7 @@ app.use(indexRouter);
 app.use(globalErrHandler);
 
 dbConnection
-  .sync()
+  .sync({alter: true})
   .then(result => {
     app.listen(process.env.PORT, () => {
       console.log("Server started on port", process.env.PORT);
