@@ -77,6 +77,16 @@ eg.
 
 -NOTE: This will also delete the sessions data of the student
 
+5. IP/auth/login [POST]
+
+```
+eg.
+- sendData = {
+    "email": "deepakkumar.shinde1@gmail.com",
+    "password": "a"
+}
+```
+
 ## Error codes
 
 1. E_1000 : Invalid Data
