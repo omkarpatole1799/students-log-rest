@@ -39,7 +39,7 @@ export const addStudent = asyncErrHandler(async (req, res) => {
     _success: true,
     _httpCode: 201,
     _message: "Created user successfully",
-    _data: { user: _createdUser.toJSON() },
+    _data: {},
   });
 });
 

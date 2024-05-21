@@ -83,3 +83,4 @@ eg.
 2. E_1001 : Server Error
 3. E_1002 : Create Resource Failed
 4. E_1003 : Data Already Exsists
+5. E_1004 : UNAUTHORIZED
