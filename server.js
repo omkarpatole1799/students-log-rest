@@ -5,11 +5,14 @@ import students from "./models/students.js";
 import admin from "./models/admin.js";
 import sessions from "./models/session.js";
 
+import cors from "cors";
+
 import dbConnection from "./config/db-connect.js";
 import globalErrHandler from "./lib/globalErrHandler.js";
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(indexRouter);
