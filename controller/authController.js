@@ -24,6 +24,7 @@ export const checkLogin = asyncErrHandler(async (req, res) => {
 
   let token = await jwt.sign(
     {
+      userId: _loginRes.id,
       name: _loginRes.name,
       email: _loginRes.email,
       mobile: _loginRes.mobile,
