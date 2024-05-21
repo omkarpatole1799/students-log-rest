@@ -2,6 +2,8 @@
 
 ## Student
 
+# IP = 64.227.149.129:3000
+
 1. IP/student/list [post]
 
 ```
