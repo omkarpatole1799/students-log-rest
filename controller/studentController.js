@@ -6,6 +6,7 @@ import {
   CREATE_RESOURCE_FAILED,
   INVALID_DATA,
 } from "../lib/errCodes.js";
+import sessions from "../models/session.js";
 import students from "../models/students.js";
 
 export const addStudent = asyncErrHandler(async (req, res) => {
@@ -38,7 +39,7 @@ export const addStudent = asyncErrHandler(async (req, res) => {
     _success: true,
     _httpCode: 201,
     _message: "Created user successfully",
-    _data: { user: _createdUser.toJSON() },
+    _data: {},
   });
 });
 
@@ -58,5 +59,42 @@ export const studentsList = asyncErrHandler(async (req, res) => {
     _httpCode: 200,
     _message: "Students List",
     _data: { _students },
+  });
+});
+
+export const deleteStudent = asyncErrHandler(async (req, res) => {
+  let { student_id } = req.body;
+  if (!student_id) {
+    throw new CustomErr("Invalid student ID", 400, INVALID_DATA);
+  }
+
+  let _searchStudRes = await students.findOne({
+    where: {
+      id: student_id,
+    },
+    raw: true,
+  });
+
+  if (!_searchStudRes) {
+    throw new CustomErr("Invalid student ID", 400, INVALID_DATA);
+  }
+
+  let _deleteStudRes = await students.destroy({
+    where: {
+      id: student_id,
+    },
+  });
+
+  await sessions.destroy({
+    where: {
+      student_id,
+    },
+  });
+
+  return res.status(200).json({
+    _success: true,
+    _httpCode: 200,
+    _message: "Delete Student successfully",
+    _data: {},
   });
 });
