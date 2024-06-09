@@ -1,3 +1,4 @@
+import { Sequelize } from "sequelize";
 import asyncErrHandler from "../lib/asyncErrHandler.js";
 import CustomErr from "../lib/customErrHandler.js";
 import {
@@ -90,6 +91,7 @@ export const addSession = asyncErrHandler(async (req, res) => {
 
 export const getSession = asyncErrHandler(async (req, res) => {
   let { student_id } = req.body;
+  console.log("here", student_id);
   if (!student_id) {
     throw new CustomErr("Invalid student id", 400, INVALID_DATA);
   }
@@ -98,13 +100,48 @@ export const getSession = asyncErrHandler(async (req, res) => {
     where: {
       student_id,
     },
+    attributes: [
+      "id",
+      "student_id",
+      "time_start",
+      "time_end",
+      "topic_discussed",
+      "home_work",
+      "video_url",
+      [
+        Sequelize.fn("DATE_FORMAT", Sequelize.col("session_date"), "%d-%m-%Y"),
+        "session_date",
+      ],
+    ],
     raw: true,
   });
+
+  console.log(_sessionList, "_sessionList");
 
   return res.status(201).json({
     _success: true,
     _httpCode: 201,
     _message: "Session details",
     _data: { _sessions: _sessionList },
+  });
+});
+
+export const deleteSession = asyncErrHandler(async (req, res, next) => {
+  let sId = req.body?.session_id;
+  if (!sId) throw new CustomErr("Invalid session id", 400, INVALID_DATA);
+
+  let _deleteSessionRes = await sessions.destroy({
+    where: {
+      id: sId,
+    },
+  });
+
+  console.log(_deleteSessionRes, "_deleteSessionRes");
+
+  return res.status(201).json({
+    _success: true,
+    _httpCode: 201,
+    _message: "Deleted session",
+    _data: { _deleteSessionRes },
   });
 });
