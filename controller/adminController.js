@@ -54,6 +54,9 @@ export const addSession = asyncErrHandler(async (req, res) => {
     student_id,
     session_date,
   } = req.body;
+  console.log(req.body, "req.body");
+
+  console.log(req.body, "==req.body==");
 
   if (
     (!time_start,
@@ -113,6 +116,7 @@ export const getSession = asyncErrHandler(async (req, res) => {
         "session_date",
       ],
     ],
+    order: [["session_date", "ASC"]],
     raw: true,
   });
 
@@ -123,6 +127,57 @@ export const getSession = asyncErrHandler(async (req, res) => {
     _httpCode: 201,
     _message: "Session details",
     _data: { _sessions: _sessionList },
+  });
+});
+
+export const editSession = asyncErrHandler(async (req, res) => {
+  let {
+    time_start,
+    time_end,
+    topic_discussed,
+    home_work,
+    video_url,
+    student_id,
+    session_date,
+    session_id,
+  } = req.body;
+
+  console.log(req.body, "==req.body==");
+
+  if (
+    (!time_start,
+    !session_id,
+    !time_end,
+    !topic_discussed,
+    !home_work,
+    !video_url,
+    !student_id,
+    !session_date)
+  ) {
+    throw new CustomErr("Invalid details", 400, INVALID_DATA);
+  }
+
+  let _updateSesRes = await sessions.update(
+    {
+      time_start,
+      time_end,
+      topic_discussed,
+      home_work,
+      video_url,
+      session_date,
+    },
+    {
+      where: {
+        id: session_id,
+      },
+    }
+  );
+
+  return res.status(201).json({
+    _success: true,
+    _httpCode: 201,
+    _message: "Edited session details",
+    _data: { _sessions: _updateSesRes },
   });
 });
 
